@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>QuickTools — Free Online Tools</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d30;--panel2:#17243a;--text:#edf3ff;--muted:#a9b8d0;--accent:#69e0c0;--accent2:#7ca7ff;--line:#293953;--danger:#ffb4a8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#182b43 0,transparent 32%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{width:min(1100px,92%);margin:auto}.top{padding:24px 0;border-bottom:1px solid var(--line)}.nav{display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font-size:1.25rem;font-weight:800;letter-spacing:.2px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:.9rem}
+.hero{padding:54px 0 30px;text-align:center}.pill{display:inline-block;padding:6px 12px;border:1px solid #37685f;border-radius:99px;color:var(--accent);font-size:.82rem;background:#102b2b}.hero h1{font-size:clamp(2rem,6vw,3.6rem);line-height:1.08;margin:18px 0 12px}.hero p{color:var(--muted);max-width:650px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:24px 0 50px}.card{background:linear-gradient(160deg,var(--panel),#101a2b);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 32px #0002}.card h2{margin:0 0 4px;font-size:1.2rem}.desc{margin:0 0 16px;color:var(--muted);font-size:.92rem}
+textarea,input[type=text]{width:100%;background:#0b1423;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:12px;font:inherit;outline:none}textarea:focus,input:focus{border-color:var(--accent2)}textarea{min-height:125px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--accent);color:#08211c;font-weight:750;cursor:pointer}.btn.secondary{background:#263750;color:var(--text);border:1px solid #3b506e}.btn:disabled{opacity:.5;cursor:not-allowed}.hint,.status{font-size:.85rem;color:var(--muted)}.status{margin-top:10px;min-height:1.3em}.statline{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.9rem;margin-top:10px}.statline b{color:var(--text)}
+.file{display:block;width:100%;padding:12px;border:1px dashed #506583;border-radius:11px;background:#0b1423;color:var(--muted)}
+#qrOutput{background:#fff;border-radius:12px;display:inline-flex;padding:12px;margin-top:14px;min-height:20px}
+footer{border-top:1px solid var(--line);padding:22px 0 36px;color:var(--muted);font-size:.85rem}.notice{border:1px solid #594a2d;background:#2b2416;color:#f6dca8;padding:12px 14px;border-radius:12px;margin:0 0 22px;font-size:.88rem}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding-top:38px}.card{padding:18px}.tag{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><div class="brand">Quick<span>Tools</span></div><div class="tag">Simple tools. Right in your browser.</div></div></header>
+<main class="wrap">
+<section class="hero"><span class="pill">FREE • SIMPLE • MOBILE FRIENDLY</span><h1>Useful tools, <span style="color:var(--accent)">all in one place.</span></h1><p>Convert files, create QR codes and work with text. Your files are processed in your browser and are not uploaded to a server by this website.</p></section>
+<div class="notice">Some PDF and QR features load open-source libraries from a CDN, so an internet connection is needed for those features. This starter website has no payment system or guaranteed earning feature.</div>
+<section class="grid">
+<article class="card">
+<h2>Text to PDF</h2><p class="desc">Turn your notes or text into a downloadable PDF.</p>
+<textarea id="pdfText" placeholder="Write or paste your text here..."></textarea>
+<div class="row"><button class="btn" id="makePdf">Download PDF</button><span class="hint">Supports English and basic text.</span></div><div class="status" id="pdfStatus"></div>
+</article>
+<article class="card">
+<h2>Word Counter</h2><p class="desc">Count words, characters and estimate reading time.</p>
+<textarea id="countText" placeholder="Start typing or paste text..."></textarea>
+<div class="statline"><span>Words: <b id="words">0</b></span><span>Characters: <b id="chars">0</b></span><span>Reading: <b id="reading">0 min</b></span></div>
+</article>
+<article class="card">
+<h2>Image to PDF</h2><p class="desc">Combine an image into a PDF file.</p>
+<input class="file" id="imageFile" type="file" accept="image/*">
+<div class="row"><button class="btn" id="imagePdf">Convert to PDF</button><span class="hint">Choose JPG, PNG or another browser-supported image.</span></div><div class="status" id="imageStatus"></div>
+</article>
+<article class="card">
+<h2>PDF to Text</h2><p class="desc">Extract selectable text from a PDF document.</p>
+<input class="file" id="pdfFile" type="file" accept="application/pdf">
+<div class="row"><button class="btn" id="extractPdf">Extract text</button><button class="btn secondary" id="copyExtract" disabled>Copy text</button></div>
+<textarea id="extracted" placeholder="Extracted text will appear here..." readonly></textarea><div class="status" id="extractStatus"></div>
+</article>
+<article class="card">
+<h2>QR Code Generator</h2><p class="desc">Create a QR code from a link or short text.</p>
+<input type="text" id="qrText" placeholder="https://example.com">
+<div class="row"><button class="btn" id="makeQr">Generate QR</button><button class="btn secondary" id="saveQr" disabled>Save PNG</button></div>
+<div id="qrOutput" aria-label="QR code preview"></div><div class="status" id="qrStatus"></div>
+</article>
+<article class="card">
+<h2>Quick note</h2><p class="desc">A small reminder about privacy and safe use.</p>
+<p class="hint">This is a front-end starter project. It does not collect payments, ask for CNIC, or store uploaded files. Do not upload private or sensitive documents to websites you do not trust.</p>
+<p class="hint">Before publishing, add your own contact details, privacy policy and terms if you expand the site.</p>
+</article>
+</section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> QuickTools. Made as a simple browser-based tools website.</div></footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const countText=document.getElementById('countText');
+function updateCount(){const t=countText.value;const w=t.trim()?t.trim().split(/\\s+/).length:0;document.getElementById('words').textContent=w;document.getElementById('chars').textContent=t.length;document.getElementById('reading').textContent=(w?Math.max(1,Math.ceil(w/200)):0)+' min'}
+countText.addEventListener('input',updateCount);
+function loadScript(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('Could not load a required library. Check your internet connection.'));document.head.appendChild(s)})}
+document.getElementById('makePdf').onclick=async()=>{const text=document.getElementById('pdfText').value.trim(),status=document.getElementById('pdfStatus');if(!text){status.textContent='Please enter some text first.';return}try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');const {jsPDF}=window.jspdf;const doc=new jsPDF();const lines=doc.splitTextToSize(text,180);let y=18;for(const line of lines){if(y>280){doc.addPage();y=18}doc.text(line,15,y);y+=7}doc.save('quicktools-text.pdf');status.textContent='Your PDF is ready.'}catch(e){status.textContent=e.message}};
+document.getElementById('imagePdf').onclick=async()=>{const f=document.getElementById('imageFile').files[0],status=document.getElementById('imageStatus');if(!f){status.textContent='Please choose an image first.';return}try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});const {jsPDF}=window.jspdf;const img=new Image();img.onload=()=>{const pdf=new jsPDF({orientation:img.width>img.height?'landscape':'portrait',unit:'px',format:[img.width,img.height]});pdf.addImage(data,'JPEG',0,0,img.width,img.height);pdf.save('quicktools-image.pdf');status.textContent='Your PDF is ready.'};img.onerror=()=>status.textContent='This image could not be read.';img.src=data}catch(e){status.textContent=e.message}};
+let extractedText='';
+document.getElementById('extractPdf').onclick=async()=>{const f=document.getElementById('pdfFile').files[0],status=document.getElementById('extractStatus');if(!f){status.textContent='Please choose a PDF first.';return}try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const data=await f.arrayBuffer(),pdf=await pdfjsLib.getDocument({data}).promise;let all='';for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),content=await page.getTextContent();all+=content.items.map(x=>x.str).join(' ')+'\\n\\n'}extractedText=all;document.getElementById('extracted').value=all;document.getElementById('copyExtract').disabled=!all;status.textContent=all.trim()?'Text extracted.':'No selectable text found. Scanned PDFs may need OCR.'}catch(e){status.textContent='Could not read this PDF. '+e.message}};
+document.getElementById('copyExtract').onclick=async()=>{try{await navigator.clipboard.writeText(extractedText);document.getElementById('extractStatus').textContent='Copied.'}catch(e){document.getElementById('extractStatus').textContent='Copy is unavailable in this browser.'}};
+let qrCanvas=null;
+document.getElementById('makeQr').onclick=async()=>{const value=document.getElementById('qrText').value.trim(),status=document.getElementById('qrStatus'),out=document.getElementById('qrOutput');if(!value){status.textContent='Enter a link or text first.';return}try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js');out.innerHTML='';new QRCode(out,{text:value,width:190,height:190,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});setTimeout(()=>{qrCanvas=out.querySelector('canvas')||out.querySelector('img');document.getElementById('saveQr').disabled=!qrCanvas},150);status.textContent='QR code generated.'}catch(e){status.textContent=e.message}};
+document.getElementById('saveQr').onclick=()=>{if(!qrCanvas)return;const a=document.createElement('a');a.href=qrCanvas.tagName==='CANVAS'?qrCanvas.toDataURL('image/png'):qrCanvas.src;a.download='quicktools-qr.png';a.click()};
+</script>
+</body></html>
